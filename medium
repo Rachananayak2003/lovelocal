@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    if (!root || root == p || root == q) {
+        return root;
+    }
+    struct TreeNode* left_lca = lowestCommonAncestor(root->left, p, q);
+    struct TreeNode* right_lca = lowestCommonAncestor(root->right, p, q);
+
+    if (left_lca && right_lca) {
+        return root;
+    }
+    return left_lca ? left_lca : right_lca;
+}
+int main() {
+    struct TreeNode* root = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->val = 6;
+    root->left = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->left->val = 2;
+    root->left->left = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->left->left->val = 0;
+    root->left->right = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->left->right->val = 4;
+    root->left->right->left = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->left->right->left->val = 3;
+    root->left->right->right = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->left->right->right->val = 5;
+    root->right = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->right->val = 8;
+    root->right->left = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->right->left->val = 7;
+    root->right->right = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->right->right->val = 9;
+    struct TreeNode* p = root->left;
+    struct TreeNode* q = root->left->right;
+    struct TreeNode* result = lowestCommonAncestor(root, p, q);
+    printf(" %d\n", result->val);  
+    free(root->right->right);
+    free(root->right->left);
+    free(root->right);
+    free(root->left->right->right);
+    free(root->left->right->left);
+    free(root->left->right);
+    free(root->left->left);
+    free(root->left);
+    free(root);
+
+    return 0;
+}
