@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void reverseString(char* str) {
+    int i = 0, j = strlen(str) - 1;
+    while (i < j) {
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
+    }
+}
+
+char* shortestPalindrome(char* s) {
+    int n = strlen(s);
+    
+    char* rev_s = (char*)malloc((n + 1) * sizeof(char));
+    strcpy(rev_s, s);
+    reverseString(rev_s);
+
+    for (int i = n; i > 0; i--) {
+        if (strncmp(s, rev_s + n - i, i) == 0) {
+            char* result = (char*)malloc((n + n - i + 1) * sizeof(char));
+            strcpy(result, rev_s);
+            strcat(result, s + i);
+            free(rev_s);
+            return result;
+        }
+    }
+
+    free(rev_s);
+    return NULL;
+}
+
+int main() {
+    char s[] = "abcd";
+    char* result = shortestPalindrome(s);
+
+    if (result) {
+        printf(" %s\n", result);
+        free(result);
+    } else {
+        printf("Unable to find palindrome.\n");
+    }
+
+    return 0;
+}
